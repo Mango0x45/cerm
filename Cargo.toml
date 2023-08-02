@@ -1,0 +1,11 @@
+[package]
+name = "cerm"
+version = "1.0.0"
+edition = "2021"
+authors = ["Thomas Voss <mail@thomasvoss.com>"]
+description = "C-inspired error reporting macros"
+readme = "README.md"
+repository = "https://git.thomasvoss.com/cerm"
+license = "0BSD"
+keywords = ["exit", "terminate", "error", "error-message"]
+categories = ["command-line-interface"]
