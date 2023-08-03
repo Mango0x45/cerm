@@ -3,7 +3,7 @@
 #[doc(hidden)]
 pub use std::{env, process};
 
-/// Print a diagnostic message to stderr and exit with a given code.
+/// Print a diagnostic message to the standard error and exit with a given code.
 ///
 /// This macro is analagous to the BSD [`errx(3)`] C function.  It takes at a
 /// minimum two arguments.  The first argument is the code with passed to
@@ -80,7 +80,7 @@ macro_rules! err {
 	}
 }
 
-/// Print a diagnostic message to stderr
+/// Print a diagnostic message to the standard error.
 ///
 /// This macro is analagous to the BSD [`warnx(3)`] C function.  It takes the
 /// same arguments one would pass to a macro like [`println!`].  In fact, the
