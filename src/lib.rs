@@ -42,7 +42,7 @@ pub use std::{env, process};
 /// [`errx(3)`]: https://man.openbsd.org/err.3
 #[macro_export]
 macro_rules! err_code {
-	($code:tt, $($fmt:tt)+) => {
+	($code:expr, $($fmt:tt)+) => {
 		eprint!("{}: ", $crate::env::args().next().unwrap_or("Error".into()));
 		eprintln!($($fmt)*);
 		$crate::process::exit($code);
