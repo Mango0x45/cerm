@@ -122,3 +122,66 @@ macro_rules! warn {
 		eprintln!($($fmt)+);
 	};
 }
+
+/// Require that an expression returns [`Result::Ok`] or [`Option::Some`].
+///
+/// This macro simplifies error handling when the [`Result::Err`] or
+/// [`Option::None`] cases of a [`std::result::Result`] or an
+/// [`std::option::Option`] result in logging an error and terminating the
+/// program.
+///
+/// When invoked with a [`std::result::Result`], the macro takes only 1 parameter
+/// — the [`std::result::Result`] whose success case you require — and in the
+/// case of `Err(v)` returns `v`.  Otherwise the [`err!`] macro is called with
+/// the format string `"{e}"` (with `e` being the error).
+///
+/// Since [`std::option::Option`]s don’t return error values — simply returning
+/// [`Option::None` ]— we can’t print a meaningful diagnostic message for you.
+/// Therefore you the user also need to provide as additional arguments the same
+/// parameters you would pass to an invokation of [`err!`].
+///
+/// # Panics
+///
+/// Calls [`err!`] which may panic if it fails.
+///
+/// # Examples
+///
+/// Try to take a child process’ standard input and assign it to `ci`.  If the
+/// result of `stdin.take()` is [`Option::None` ]then print the given diagnostic
+/// message and exit the program using [`err!`].
+///
+/// ```
+/// use cerm::require;
+///
+/// let ci = require!(
+/// 	child.stdin.take(),
+/// 	"Failed to open stdin of “{}”",
+/// 	cmd.to_string_lossy()
+/// );
+/// ```
+///
+///
+/// Wait for a child process to terminate, and execute [`err!`] if the call to
+/// `child.wait()` fails.  Notice how because `child.wait()` returns a
+/// [`std::result::Result`], we only specify one argument.
+///
+/// ```
+/// use cerm::require;
+///
+/// require!(child.wait());
+/// ```
+#[macro_export]
+macro_rules! require {
+	($e:expr) => {
+		match $e {
+			Ok(v) => v,
+			Err(e) => { err!("{e}"); },
+		}
+	};
+	($e:expr, $($fmt:tt)+) => {
+		match $e {
+			Some(v) => v,
+			None => { err!($($fmt)+); },
+		}
+	};
+}
