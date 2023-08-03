@@ -44,7 +44,7 @@ pub use std::{env, process};
 macro_rules! err_code {
 	($code:expr, $($fmt:tt)+) => {
 		eprint!("{}: ", $crate::env::args().next().unwrap_or("Error".into()));
-		eprintln!($($fmt)*);
+		eprintln!($($fmt)+);
 		$crate::process::exit($code);
 	};
 }
@@ -76,7 +76,7 @@ macro_rules! err_code {
 #[macro_export]
 macro_rules! err {
 	($($fmt:tt)+) => {
-		$crate::err_code!(1, $($fmt)*);
+		$crate::err_code!(1, $($fmt)+);
 	}
 }
 
@@ -119,6 +119,6 @@ macro_rules! err {
 macro_rules! warn {
 	($($fmt:tt)+) => {
 		eprint!("{}: ", $crate::env::args().next().unwrap_or("Error".into()));
-		eprintln!($($fmt)*);
+		eprintln!($($fmt)+);
 	};
 }
